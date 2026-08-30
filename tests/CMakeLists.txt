@@ -24,6 +24,7 @@ function(hydrocoupleogc_add_test _name)
 endfunction()
 
 hydrocoupleogc_add_test(test_wmscapabilities)
+hydrocoupleogc_add_test(test_servicediscovery)
 hydrocoupleogc_add_test(test_wmsrequest)
 hydrocoupleogc_add_test(test_wmtscapabilities)
 hydrocoupleogc_add_test(test_httpclient OWN_MAIN)

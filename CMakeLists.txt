@@ -28,12 +28,14 @@ add_library(HydroCoupleOgc SHARED
     include/hydrocoupleogc/crsurn.h
     include/hydrocoupleogc/httpclient.h
     include/hydrocoupleogc/servicecredentials.h
+    include/hydrocoupleogc/servicediscovery.h
     include/hydrocoupleogc/wmscapabilities.h
     include/hydrocoupleogc/wmsrequest.h
     include/hydrocoupleogc/wmtscapabilities.h
     src/crsurn.cpp
     src/httpclient.cpp
     src/servicecredentials.cpp
+    src/servicediscovery.cpp
     src/wmscapabilities.cpp
     src/wmsrequest.cpp
     src/wmtscapabilities.cpp
