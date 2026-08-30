@@ -1,0 +1,33 @@
+{
+  "name": "hydrocoupleogc",
+  "version-semver": "0.1.0",
+  "description": "OGC web service clients (WMS, WMTS, WCS, WFS) over Qt Network, shared by HydroCoupleComposer and openswmm.gui.",
+  "license": "LGPL-3.0-or-later",
+  "homepage": "https://www.hydrocouple.org",
+  "builtin-baseline": "9e593bb18ea69cc5095e012465dcd675a822ed0d",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    }
+  ],
+  "default-features": [],
+  "features": {
+    "tests": {
+      "description": "Google Test suites over saved capabilities documents",
+      "dependencies": [
+        "gtest"
+      ]
+    }
+  },
+  "overrides": [
+    {
+      "name": "gtest",
+      "version": "1.15.2"
+    }
+  ]
+}

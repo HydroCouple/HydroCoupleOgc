@@ -19,7 +19,12 @@ set(CMAKE_AUTOMOC ON)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 
-option(HYDROCOUPLEOGC_BUILD_TESTS "Build the test suite" ON)
+# Tests only when this is the project being built. Consumed through
+# FetchContent -- which is how HydroCoupleComposer and openswmm.gui take it
+# -- the parent's manifest governs what is available, and gtest need not be
+# among it.
+option(HYDROCOUPLEOGC_BUILD_TESTS "Build the test suite"
+       ${PROJECT_IS_TOP_LEVEL})
 
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
 
@@ -66,6 +71,10 @@ if(HYDROCOUPLEOGC_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 
+# The package config is for consumers that find_package() an installed
+# copy. A FetchContent consumer links the build-tree target directly and
+# needs none of it, but installing it costs nothing and keeps both routes
+# open.
 install(TARGETS HydroCoupleOgc EXPORT HydroCoupleOgcTargets
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
