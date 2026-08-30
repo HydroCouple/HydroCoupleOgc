@@ -15,3 +15,4 @@ function(hydrocoupleogc_add_test _name)
 endfunction()
 
 hydrocoupleogc_add_test(test_wmscapabilities)
+hydrocoupleogc_add_test(test_wmtscapabilities)

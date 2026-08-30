@@ -26,8 +26,12 @@ find_package(Qt6 REQUIRED COMPONENTS Core)
 
 add_library(HydroCoupleOgc SHARED
     include/hydrocoupleogc/export.h
+    include/hydrocoupleogc/crsurn.h
     include/hydrocoupleogc/wmscapabilities.h
+    include/hydrocoupleogc/wmtscapabilities.h
+    src/crsurn.cpp
     src/wmscapabilities.cpp
+    src/wmtscapabilities.cpp
 )
 
 add_library(HydroCoupleOgc::HydroCoupleOgc ALIAS HydroCoupleOgc)
