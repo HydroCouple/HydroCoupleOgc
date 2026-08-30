@@ -30,17 +30,23 @@ find_package(Qt6 REQUIRED COMPONENTS Core Network)
 
 add_library(HydroCoupleOgc SHARED
     include/hydrocoupleogc/export.h
+    include/hydrocoupleogc/axisorder.h
     include/hydrocoupleogc/crsurn.h
     include/hydrocoupleogc/httpclient.h
     include/hydrocoupleogc/servicecredentials.h
     include/hydrocoupleogc/servicediscovery.h
+    include/hydrocoupleogc/wfscapabilities.h
+    include/hydrocoupleogc/wfsrequest.h
     include/hydrocoupleogc/wmscapabilities.h
     include/hydrocoupleogc/wmsrequest.h
     include/hydrocoupleogc/wmtscapabilities.h
+    src/axisorder.cpp
     src/crsurn.cpp
     src/httpclient.cpp
     src/servicecredentials.cpp
     src/servicediscovery.cpp
+    src/wfscapabilities.cpp
+    src/wfsrequest.cpp
     src/wmscapabilities.cpp
     src/wmsrequest.cpp
     src/wmtscapabilities.cpp

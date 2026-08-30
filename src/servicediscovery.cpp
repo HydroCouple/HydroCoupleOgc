@@ -48,18 +48,28 @@ namespace HydroCouple::Ogc
       query.addQueryItem(item.first, item.second);
     }
 
-    query.addQueryItem(QStringLiteral("SERVICE"),
-                       kind == ServiceKind::Wms ? QStringLiteral("WMS")
-                                                : QStringLiteral("WMTS"));
+    QString service = QStringLiteral("WMTS");
+    QString newest = QStringLiteral("1.0.0");
+
+    if (kind == ServiceKind::Wms)
+    {
+      service = QStringLiteral("WMS");
+      newest = QStringLiteral("1.3.0");
+    }
+    else if (kind == ServiceKind::Wfs)
+    {
+      service = QStringLiteral("WFS");
+      newest = QStringLiteral("2.0.0");
+    }
+
+    query.addQueryItem(QStringLiteral("SERVICE"), service);
     query.addQueryItem(QStringLiteral("REQUEST"),
                        QStringLiteral("GetCapabilities"));
 
     // The newest version each service has. A server that does not have it
     // answers in the newest it does have, and everything downstream follows
     // the answer.
-    query.addQueryItem(QStringLiteral("VERSION"),
-                       kind == ServiceKind::Wms ? QStringLiteral("1.3.0")
-                                                : QStringLiteral("1.0.0"));
+    query.addQueryItem(QStringLiteral("VERSION"), newest);
 
     url.setQuery(query);
 
@@ -85,6 +95,11 @@ namespace HydroCouple::Ogc
           || element == QLatin1String("WMT_MS_Capabilities"))
       {
         return ServiceKind::Wms;
+      }
+
+      if (element == QLatin1String("WFS_Capabilities"))
+      {
+        return ServiceKind::Wfs;
       }
 
       if (element == QLatin1String("Capabilities"))

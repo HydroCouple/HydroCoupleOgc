@@ -3,7 +3,7 @@
 
 #include "hydrocoupleogc/wmsrequest.h"
 
-#include "hydrocoupleogc/crsurn.h"
+#include "hydrocoupleogc/axisorder.h"
 
 #include <QUrl>
 #include <QUrlQuery>
@@ -31,27 +31,7 @@ namespace HydroCouple::Ogc
       return false;
     }
 
-    const CrsIdentifier identifier = parseCrsIdentifier(crs);
-
-    // Only EPSG says so. CRS84 needs no case of its own: it is OGC's, not
-    // EPSG's, and being longitude first is the whole reason it exists.
-    if (identifier.authority.compare(QLatin1String("EPSG"),
-                                     Qt::CaseInsensitive) != 0)
-    {
-      return false;
-    }
-
-    // A short list rather than the register: these are the geographic
-    // systems a map in this application is actually asked for, and every
-    // projected system it uses — Web Mercator above all — is easting first.
-    // A client that swapped for all of 1.3.0 would draw those sideways.
-    static const QStringList latitudeFirst = {
-      QStringLiteral("4326"),  // WGS 84
-      QStringLiteral("4258"),  // ETRS89
-      QStringLiteral("4269"),  // NAD83
-      QStringLiteral("4979")}; // WGS 84 3D
-
-    return latitudeFirst.contains(identifier.code);
+    return authorityWritesLatitudeFirst(crs);
   }
 
   QString buildGetMapUrl(const WmsCapabilities &capabilities,

@@ -30,7 +30,8 @@ namespace HydroCouple::Ogc
   {
       Unknown,
       Wms,
-      Wmts
+      Wmts,
+      Wfs
   };
 
   /*!
@@ -56,9 +57,10 @@ namespace HydroCouple::Ogc
    *
    * Decided from the element names, so it costs nothing and works on a
    * document this library could not otherwise parse. A WMS calls its root
-   * WMS_Capabilities, or WMT_MS_Capabilities before 1.3.0; a WMTS calls
-   * its root simply Capabilities — and may wrap it in a SOAP envelope,
-   * which is why the root alone is not what is looked at.
+   * WMS_Capabilities, or WMT_MS_Capabilities before 1.3.0; a WFS calls its
+   * root WFS_Capabilities; a WMTS calls its root simply Capabilities — and
+   * may wrap it in a SOAP envelope, which is why the root alone is not what
+   * is looked at.
    *
    * \param xml A capabilities response.
    * \returns The kind, or Unknown for anything else — including an
