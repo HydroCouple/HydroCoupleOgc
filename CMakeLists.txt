@@ -21,15 +21,18 @@ include(CMakePackageConfigHelpers)
 
 option(HYDROCOUPLEOGC_BUILD_TESTS "Build the test suite" ON)
 
-# Core only for the parsers; Network arrives with the fetch tier.
-find_package(Qt6 REQUIRED COMPONENTS Core)
+find_package(Qt6 REQUIRED COMPONENTS Core Network)
 
 add_library(HydroCoupleOgc SHARED
     include/hydrocoupleogc/export.h
     include/hydrocoupleogc/crsurn.h
+    include/hydrocoupleogc/httpclient.h
+    include/hydrocoupleogc/servicecredentials.h
     include/hydrocoupleogc/wmscapabilities.h
     include/hydrocoupleogc/wmtscapabilities.h
     src/crsurn.cpp
+    src/httpclient.cpp
+    src/servicecredentials.cpp
     src/wmscapabilities.cpp
     src/wmtscapabilities.cpp
 )
@@ -48,7 +51,7 @@ target_include_directories(HydroCoupleOgc
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include>)
 
-target_link_libraries(HydroCoupleOgc PUBLIC Qt6::Core)
+target_link_libraries(HydroCoupleOgc PUBLIC Qt6::Core Qt6::Network)
 
 set_target_properties(HydroCoupleOgc PROPERTIES
     VERSION ${PROJECT_VERSION}
