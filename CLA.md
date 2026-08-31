@@ -6,11 +6,11 @@ Thank you for your interest in contributing to **HydroCoupleOgc**, maintained by
 
 This CLA does **not** transfer your copyright to the Technical Manager. You retain full ownership of your contributions. The CLA grants a license that enables the project to be distributed, maintained, and relicensed in the future without requiring additional consent from every contributor.
 
-The Project is currently distributed to the public under the **GNU Lesser General Public License, version 3 or later** (see [LICENSE](./LICENSE)). Contributions accepted into the Project are made available under those terms. The relicensing right granted in Section 2 below operates in addition to, and does not revoke, that outbound license: anything already released under the LGPL stays available under it.
+The Project is currently distributed to the public under the **GNU Lesser General Public License, version 3 or later** (see [LICENSE](./LICENSE)). Contributions accepted into the Project are made available under those terms, together with the attribution notices recorded in [NOTICE](./NOTICE). The relicensing right granted in Section 2 below operates in addition to, and does not revoke, that outbound license: anything already released under the LGPL stays available under it.
 
 The outbound license is weak-copyleft by design rather than by accident. HydroCoupleOgc is linked by projects under different licenses — HydroCoupleComposer under the LGPL and openswmm.gui under the GPL — and the LGPL is what lets a single shared library serve both.
 
-The Technical Manager role may transfer over time. Rights granted under this CLA persist through any such transition and vest in whoever holds the Technical Manager role at the time they are exercised.
+The Technical Manager role may transfer over time per the succession process described in [CONTRIBUTING.md §3](./CONTRIBUTING.md#3-succession--delegation). Rights granted under this CLA persist through any such transition and vest in whoever holds the Technical Manager role at the time they are exercised.
 
 ---
 
@@ -19,7 +19,7 @@ The Technical Manager role may transfer over time. Rights granted under this CLA
 - **"You"** — the individual, or the legal entity on whose behalf an individual is signing, submitting a contribution.
 - **"Contribution"** — any original work of authorship, including source code, documentation, tests, configuration, data, UI assets, or any other material, intentionally submitted to the project by You via a pull request, patch, issue attachment, or any other means.
 - **"Project"** — the HydroCoupleOgc software repository hosted at https://github.com/HydroCouple/HydroCoupleOgc.
-- **"Technical Manager"** — the current holder of the Technical Manager role for the Project. The current Technical Manager is [@cbuahin](https://github.com/cbuahin).
+- **"Technical Manager"** — the current holder of the Technical Manager role for the Project, as defined in [CONTRIBUTING.md §2](./CONTRIBUTING.md#2-repository--technical-management). The current Technical Manager is [@cbuahin](https://github.com/cbuahin).
 
 ---
 
@@ -56,8 +56,8 @@ By submitting a Contribution, You represent and warrant that:
 
 1. **You are the author.** You are the sole author of the Contribution, or you have the legal right to submit it on behalf of all co-authors.
 2. **You have authority to grant this license.** The license grant in Sections 2 and 3 does not violate any agreement you have with a third party, and no third party has any claim over your Contribution that would restrict the grant.
-3. **Third-party content is disclosed.** If Your Contribution includes any third-party code, data, or assets, you have identified them clearly in the pull request description, confirmed their licenses are compatible with the GNU Lesser General Public License, version 3 or later, and included any attribution those licenses require.
-4. **Test fixtures are what they claim to be.** The suites here are built on capabilities documents saved verbatim from public OGC services. A fixture You add must be an unmodified response from a service that publishes it openly, recorded as such, and free of credentials, API keys, or personal data. A fixture edited to make a test pass misrepresents what a server does, which is the one thing these suites exist to record.
+3. **Third-party content is disclosed.** If Your Contribution includes any third-party code, data, or assets, you have identified them clearly in the pull request description, confirmed their licenses are compatible with the GNU Lesser General Public License, version 3 or later, and added any attribution those licenses require to [NOTICE](./NOTICE).
+4. **Test fixtures are what they claim to be.** The suites here are built on capabilities documents saved verbatim from public OGC services. A fixture You add must be an unmodified response from a service that publishes it openly, recorded as such, and free of credentials, API keys, or personal data. A fixture edited to make a test pass misrepresents what a server does, which is the one thing these suites exist to record. The full standard is in [CONTRIBUTING.md §13](./CONTRIBUTING.md#13-test-fixtures), including attribution in [NOTICE](./NOTICE).
 5. **Employer authorization.** If you are employed and your Contribution relates to your employer's business or was created using employer resources, your employer has either (a) authorized you to make this Contribution and granted the necessary rights, or (b) signed a Corporate CLA (see Section 6) covering this Contribution.
 
 ---
@@ -77,7 +77,7 @@ Tag [@cbuahin](https://github.com/cbuahin) in the discussion. The CCLA takes eff
 
 ## 7. Moral Rights
 
-To the fullest extent permitted by applicable law, You waive and agree not to assert any moral rights you may have in Your Contributions against the Technical Manager or recipients of the software, including rights of integrity and rights of attribution beyond those recorded in the Project's commit history.
+To the fullest extent permitted by applicable law, You waive and agree not to assert any moral rights you may have in Your Contributions against the Technical Manager or recipients of the software, including rights of integrity and rights of attribution beyond those provided in [AUTHORS.md](./AUTHORS.md).
 
 ---
 

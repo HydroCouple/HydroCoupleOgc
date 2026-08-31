@@ -1,0 +1,73 @@
+HydroCoupleOgc
+Copyright 2026 HydroCouple Developers
+
+This product includes software developed by the HydroCouple authors
+(https://github.com/HydroCouple/HydroCoupleOgc).
+
+Licensed under the GNU Lesser General Public License, version 3 or later.
+See the LICENSE file for the full license text.
+
+--------------------------------------------------------------------------------
+THIRD-PARTY COMPONENTS
+--------------------------------------------------------------------------------
+
+This product depends on third-party libraries that are licensed separately by
+their respective copyright holders. Each remains subject to its own license
+terms.
+
+Qt 6 (Core, Network)
+    Copyright (C) The Qt Company Ltd. and other contributors.
+    Used under the GNU Lesser General Public License, version 3.
+    https://www.qt.io/
+
+    Qt is linked, not bundled: this library is built against a Qt
+    installation supplied by the consumer, and no Qt source or binary is
+    redistributed here. The LGPL obligations that attach to shipping Qt
+    fall on whoever distributes an application built with it.
+
+Google Test
+    Copyright Google Inc., BSD 3-Clause License.
+    https://github.com/google/googletest
+
+    A test-only dependency, declared behind the `tests` feature in
+    vcpkg.json. It is not linked into the library and is absent from
+    anything this project distributes.
+
+doxygen-awesome-css
+    Copyright (c) 2021 - 2023 jothepro, MIT License.
+    https://github.com/jothepro/doxygen-awesome-css
+
+    Vendored under docs/custom/ as the documentation theme, shared with
+    openswmm.engine so the two API sites match. The MIT copyright and
+    permission notice is retained in the header of each vendored file.
+
+--------------------------------------------------------------------------------
+TEST FIXTURES
+--------------------------------------------------------------------------------
+
+The files under tests/fixtures/ are GetCapabilities, DescribeCoverage and
+exception responses saved verbatim from public OGC services, and are included
+so that the behaviour of real servers can be tested without a network. They
+are the servers' own output, reproduced unmodified for interoperability
+testing:
+
+    PDOK (Publieke Dienstverlening Op de Kaart), Netherlands
+        Actueel Hoogtebestand Nederland WCS, and a WFS capabilities
+        document.  https://www.pdok.nl/
+
+    rasdaman, Jacobs University Bremen / rasdaman GmbH
+        Germany_DTM coverage description and an exception report.
+        https://ows.rasdaman.org/
+
+    terrestris GmbH & Co. KG, Germany
+        OpenStreetMap WMS capabilities, in both 1.1.1 and 1.3.0 form.
+        https://ows.terrestris.de/osm/service
+
+    basemap.at, Austria
+        Geoland Basemap WMTS capabilities, the RESTful ResourceURL form.
+        https://basemap.at/
+
+No fixture carries credentials, API keys, or personal data. Neither the named
+organisations nor the operators of any other service referenced here endorse
+this product; their documents are used solely to record what real
+implementations of the OGC specifications actually return.
