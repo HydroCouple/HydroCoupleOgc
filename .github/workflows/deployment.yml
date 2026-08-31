@@ -54,13 +54,11 @@ jobs:
           repository: microsoft/vcpkg
           ref: 2026.07.29
           path: vcpkg
-          # Full history, not the default shallow clone. vcpkg.json pins
-          # gtest to 1.15.2 while the baseline carries 1.17.0, and an
-          # override to a non-baseline version makes vcpkg check out that
-          # version's port as a git tree from the registry's history. A
-          # shallow clone does not have it, and the failure is a bare
-          # "failed to unpack tree object" during configure.
-          fetch-depth: 0
+          # Shallow, deliberately. vcpkg only needs the port trees present
+          # at this ref, which is true so long as nothing in vcpkg.json
+          # overrides a port to a version the baseline does not carry --
+          # that is what sends vcpkg into the registry's history and makes
+          # a 285 MB full clone a build requirement.
 
       - name: Install Ninja (Linux)
         if: runner.os == 'Linux'
