@@ -1,0 +1,116 @@
+<?xml version='1.0' encoding="UTF-8" standalone="no" ?>
+<WCS_Capabilities
+   version="1.0.0" 
+   updateSequence="0" 
+   xmlns="http://www.opengis.net/wcs" 
+   xmlns:xlink="http://www.w3.org/1999/xlink" 
+   xmlns:gml="http://www.opengis.net/gml" 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://www.opengis.net/wcs http://schemas.opengis.net/wcs/1.0.0/wcsCapabilities.xsd">
+<Service>
+  <description>Web Coverage Service (WCS) van het Actueel Hoogtebestand Nederland (AHN). Het AHN is de digitale hoogtekaart voor heel Nederland. Het bevat gedetailleerde en precieze hoogtegegevens met minimaal 10 hoogtemetingen per vierkante meter. AHN is een samenwerking van de provincies, Rijksoverheid en de waterschappen. De hoogte wordt gemeten met laseraltimetrie: een techniek waarbij een vliegtuig met een laserstraal het aardoppervlak aftast. Het huidige AHN is versie 4. Deze versie is ingewonnen over de jaren 2020, 2021 en 2022. Voor meer informatie over het AHN zie https://ahn.nl. In deze WCS zijn de AHN rasterbestanden met een resolutie van 0,5 meter opgenomen. Hierin is een onderscheid tussen het DTM en het DSM gemaakt. Het DTM is bedoeld als maaiveldbestand, waarbij alle punten geclassificeerd als &#39;maaiveld&#39; tot een raster zijn herbemonsterd op basis van een Squared IDW methode. Het DSM is bedoeld als ruw bestand, waarbij alle punten behalve die geclassificeerd als &#39;water&#39; tot een raster zijn herbemonsterd op basis van een Squared IDW methode.</description>
+  <name>Actueel Hoogtebestand Nederland (AHN) WCS</name>
+  <label>Actueel Hoogtebestand Nederland (AHN) WCS</label>
+  <keywords>
+    <keyword>AHN</keyword>
+    <keyword>fysische geografie</keyword>
+    <keyword>hoogte</keyword>
+    <keyword>klimaat</keyword>
+    <keyword>ruimtelijke ordening</keyword>
+    <keyword>transport</keyword>
+    <keyword>water</keyword>
+    <keyword>elevation</keyword>
+    <keyword>infocoverageaccessservice</keyword>
+    <keyword>hoogte</keyword>
+    <keyword>HVD</keyword>
+    <keyword>Aardobservatie en milieu</keyword>
+  </keywords>
+<responsibleParty>
+    <individualName>KlantContactCenter PDOK</individualName>
+    <organisationName>PDOK</organisationName>
+    <positionName>pointOfContact</positionName>
+  <contactInfo>
+    <phone>
+    <voice></voice>
+    <facsimile></facsimile>
+    </phone>
+    <address>
+    <deliveryPoint></deliveryPoint>
+    <city>Apeldoorn</city>
+    <administrativeArea></administrativeArea>
+    <postalCode></postalCode>
+    <country>Nederland</country>
+    <electronicMailAddress>BeheerPDOK@kadaster.nl</electronicMailAddress>
+    </address>
+    <onlineResource xlink:type="simple" xlink:href="https://service.pdok.nl"/>
+  </contactInfo>
+</responsibleParty>
+  <fees>NONE</fees>
+  <accessConstraints>
+    otherRestrictions; Geen beperkingen; http://creativecommons.org/publicdomain/zero/1.0/deed.nl
+  </accessConstraints>
+</Service>
+<Capability>
+  <Request>
+    <GetCapabilities>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Get>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Post>
+        </HTTP>
+      </DCPType>
+    </GetCapabilities>
+    <DescribeCoverage>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Get>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Post>
+        </HTTP>
+      </DCPType>
+    </DescribeCoverage>
+    <GetCoverage>
+      <DCPType>
+        <HTTP>
+          <Get><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Get>
+        </HTTP>
+      </DCPType>
+      <DCPType>
+        <HTTP>
+          <Post><OnlineResource xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?" /></Post>
+        </HTTP>
+      </DCPType>
+    </GetCoverage>
+  </Request>
+  <Exception>
+    <Format>application/vnd.ogc.se_xml</Format>
+  </Exception>
+</Capability>
+<ContentMetadata>
+  <CoverageOfferingBrief>
+  <metadataLink metadataType="TC211" xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?request=GetMetadata&amp;layer=dsm_05m"/>    <description>Digital Surface Model (DSM) 0.5m</description>
+    <name>dsm_05m</name>
+    <label>Digital Surface Model (DSM) 0.5m</label>
+    <lonLatEnvelope srsName="urn:ogc:def:crs:OGC:1.3:CRS84">
+      <gml:pos>3.20030320333955 50.728765211722</gml:pos>
+      <gml:pos>7.273444085294 53.555958411015</gml:pos>
+    </lonLatEnvelope>
+  </CoverageOfferingBrief>
+  <CoverageOfferingBrief>
+  <metadataLink metadataType="TC211" xlink:type="simple" xlink:href="https://service.pdok.nl/rws/actueel-hoogtebestand-nederland/wcs/v1_0?request=GetMetadata&amp;layer=dtm_05m"/>    <description>Digital Terrain Model (DTM) 0.5m</description>
+    <name>dtm_05m</name>
+    <label>Digital Terrain Model (DTM) 0.5m </label>
+    <lonLatEnvelope srsName="urn:ogc:def:crs:OGC:1.3:CRS84">
+      <gml:pos>3.20030320333955 50.728765211722</gml:pos>
+      <gml:pos>7.273444085294 53.555958411015</gml:pos>
+    </lonLatEnvelope>
+  </CoverageOfferingBrief>
+</ContentMetadata>
+</WCS_Capabilities>

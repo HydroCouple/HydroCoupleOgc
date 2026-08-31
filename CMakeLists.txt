@@ -35,6 +35,8 @@ add_library(HydroCoupleOgc SHARED
     include/hydrocoupleogc/httpclient.h
     include/hydrocoupleogc/servicecredentials.h
     include/hydrocoupleogc/servicediscovery.h
+    include/hydrocoupleogc/wcscapabilities.h
+    include/hydrocoupleogc/wcsrequest.h
     include/hydrocoupleogc/wfscapabilities.h
     include/hydrocoupleogc/wfsrequest.h
     include/hydrocoupleogc/wmscapabilities.h
@@ -45,6 +47,8 @@ add_library(HydroCoupleOgc SHARED
     src/httpclient.cpp
     src/servicecredentials.cpp
     src/servicediscovery.cpp
+    src/wcscapabilities.cpp
+    src/wcsrequest.cpp
     src/wfscapabilities.cpp
     src/wfsrequest.cpp
     src/wmscapabilities.cpp
