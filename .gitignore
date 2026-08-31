@@ -1,3 +1,11 @@
 build/
 install/
 vcpkg_installed/
+
+# Doxygen output. The Doxyfile and the theme are committed; what they
+# generate is not.
+docs/html/
+docs/latex/
+
+# Falsification scripts and their logs are working notes, not the suite.
+verification/

@@ -1,0 +1,144 @@
+name: Unit Testing
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+env:
+  VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+  VCPKG_BINARY_SOURCES: "clear;x-gha,readwrite"
+  # Qt comes from a Qt installation rather than from vcpkg, deliberately:
+  # both consumers of this library take Qt that way, and a vcpkg-built Qt
+  # would be a second Qt in the same process.
+  QT_VERSION: 6.8.1
+
+jobs:
+  library:
+    name: "HydroCoupleOgc (${{ matrix.alias }})"
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            alias: Linux-x64
+            cmake_preset: Linux
+            shell_ext: .sh
+            vcpkg_triplet: x64-linux
+
+          - os: macos-latest
+            alias: macOS-arm64
+            cmake_preset: Darwin
+            shell_ext: .sh
+            vcpkg_triplet: arm64-osx
+
+          - os: windows-latest
+            alias: Windows-x64
+            cmake_preset: Windows
+            shell_ext: .bat
+            vcpkg_triplet: x64-windows
+
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Checkout vcpkg
+        uses: actions/checkout@v5
+        with:
+          repository: microsoft/vcpkg
+          ref: 2026.07.29
+          path: vcpkg
+
+      - name: Install Ninja (Linux)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y ninja-build
+
+      - name: Install Ninja (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ninja
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: ${{ env.QT_VERSION }}
+          # Core and Network are all this library links. Qt Test is not
+          # among them either -- the suites are Google Test.
+          modules: ''
+          cache: true
+
+      - name: Bootstrap vcpkg (Windows)
+        if: runner.os == 'Windows'
+        working-directory: ${{ env.VCPKG_ROOT }}
+        run: |
+          .\bootstrap-vcpkg${{ matrix.shell_ext }}
+          .\vcpkg.exe integrate install
+
+      - name: Bootstrap vcpkg (Unix)
+        if: runner.os != 'Windows'
+        working-directory: ${{ env.VCPKG_ROOT }}
+        run: |
+          ./bootstrap-vcpkg${{ matrix.shell_ext }}
+          chmod +x vcpkg
+
+      - name: Export GitHub Actions cache variables
+        uses: actions/github-script@v8
+        with:
+          script: |
+            core.exportVariable('ACTIONS_CACHE_URL', process.env.ACTIONS_CACHE_URL || '');
+            core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env.ACTIONS_RUNTIME_TOKEN || '');
+
+      - name: Cache vcpkg downloads (source tarballs)
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.VCPKG_ROOT }}/downloads
+          key: vcpkg-downloads-${{ runner.os }}-${{ matrix.vcpkg_triplet }}-${{ hashFiles('vcpkg.json') }}
+          restore-keys: |
+            vcpkg-downloads-${{ runner.os }}-${{ matrix.vcpkg_triplet }}-
+            vcpkg-downloads-${{ runner.os }}-
+
+      # The Windows preset uses Ninja, which needs cl.exe/link.exe on PATH.
+      - name: Set up MSVC environment (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          arch: x64
+
+      - name: Re-pin VCPKG_ROOT (Windows)
+        # vcvars64 (VS 2022 17.6+) exports VCPKG_ROOT pointing at Visual
+        # Studio's bundled vcpkg, and msvc-dev-cmd forwards it to every
+        # later step, overriding the job-level env -- so configure would
+        # silently build against VS's port snapshot instead of the pinned
+        # checkout.
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: echo "VCPKG_ROOT=${{ github.workspace }}\vcpkg" >> $env:GITHUB_ENV
+
+      - name: Configure
+        # The preset carries the vcpkg toolchain and the `tests` manifest
+        # feature, which is what puts Google Test in the tree.
+        run: cmake --preset=${{ matrix.cmake_preset }} -B build-ci
+
+      - name: Build
+        run: cmake --build build-ci --config Release
+
+      - name: Unit tests
+        # Every suite here is pure: saved capabilities documents and URL
+        # builders, plus one HTTP client tested against a server started
+        # inside the test process on loopback. Nothing reaches the network,
+        # so a CI runner without egress runs the whole suite.
+        run: ctest --test-dir build-ci -C Release --output-on-failure
+
+      - name: Upload test output on failure
+        if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: ctest-${{ matrix.alias }}
+          path: build-ci/Testing/
+          retention-days: 7

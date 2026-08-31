@@ -1,0 +1,96 @@
+name: Documentation
+
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main, develop]
+    tags: ["v*.*.*"]
+    paths: ['docs/**', 'include/**', 'src/**', '**/*.md']
+  pull_request:
+    branches: [main, develop]
+    paths: ['docs/**', 'include/**', 'src/**', '**/*.md']
+  workflow_dispatch:
+
+# Allow only one concurrent deployment. Do NOT cancel in-progress runs so
+# that production deployments always complete.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build_doxygen_docs:
+    name: Build API Docs (Doxygen)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Install Graphviz and download tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y graphviz wget tar
+
+      - name: Install Doxygen 1.13.2
+        run: |
+          DOXYGEN_VERSION=1.13.2
+          # Doxygen release TAGS use underscores (Release_1_13_2) while the
+          # asset filename uses dots (doxygen-1.13.2.linux.bin.tar.gz).
+          # Building the tag with dots 404s, so derive the underscore form.
+          DOXYGEN_TAG="Release_${DOXYGEN_VERSION//./_}"
+          wget -q "https://github.com/doxygen/doxygen/releases/download/${DOXYGEN_TAG}/doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz"
+          tar -xzf doxygen-${DOXYGEN_VERSION}.linux.bin.tar.gz
+          sudo mv doxygen-${DOXYGEN_VERSION}/bin/doxygen /usr/local/bin/doxygen
+          doxygen --version
+
+      - name: Build Doxygen HTML docs
+        working-directory: docs
+        run: doxygen Doxyfile
+
+      - name: Upload Doxygen docs artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: doxygen-docs
+          path: docs/html/
+          retention-days: 1
+
+  deploy:
+    name: Deploy to GitHub Pages
+    # Deploys fire on direct pushes to a whitelisted branch and on manual
+    # workflow_dispatch runs. PR events are intentionally excluded -- PR
+    # builds verify the docs compile but must not overwrite the live site.
+    if: |
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+      && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop')
+    needs: build_doxygen_docs
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download Doxygen docs
+        uses: actions/download-artifact@v5
+        with:
+          name: doxygen-docs
+          path: site/
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
