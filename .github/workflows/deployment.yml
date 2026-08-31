@@ -111,6 +111,21 @@ jobs:
         with:
           arch: x64
 
+      - name: Put Qt on PATH for later steps (Windows)
+        # vcvars64, which msvc-dev-cmd runs, REPLACES PATH rather than
+        # extending it, and forwards the replacement to every later step --
+        # so the Qt bin directory install-qt-action added is gone by the
+        # time anything runs. Every test executable then fails to load
+        # Qt6Core.dll, and on a non-interactive runner that is not an error,
+        # it is a process that never returns: all seven suites time out at
+        # 60s having never started. The original PATH survives in
+        # __VSCMD_PREINIT_PATH, but Qt's own directory is the only part
+        # needed here.
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          "$env:QT_ROOT_DIR\bin" | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+
       - name: Re-pin VCPKG_ROOT (Windows)
         # See unit_testing.yml: vcvars64 overrides VCPKG_ROOT with Visual
         # Studio's bundled copy for every later step.

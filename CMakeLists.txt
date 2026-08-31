@@ -26,6 +26,23 @@ include(CMakePackageConfigHelpers)
 option(HYDROCOUPLEOGC_BUILD_TESTS "Build the test suite"
        ${PROJECT_IS_TOP_LEVEL})
 
+# On Windows a DLL is found next to the executable that needs it or on PATH,
+# and nowhere else. Left alone, the library lands in the build root while the
+# test executables land in a subdirectory, so every one of them fails to
+# start -- and a non-interactive session gets no loader error, only a process
+# that never returns. Co-locating them is the fix that also works for anyone
+# running ctest on Windows by hand.
+#
+# Windows only: the other two platforms carry their dependencies by rpath,
+# and moving their outputs would silently invalidate paths elsewhere.
+if(WIN32)
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+    foreach(_cfg IN ITEMS DEBUG RELEASE RELWITHDEBINFO MINSIZEREL)
+        set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_${_cfg} ${CMAKE_BINARY_DIR}/bin)
+    endforeach()
+endif()
+
 find_package(Qt6 REQUIRED COMPONENTS Core Network)
 
 add_library(HydroCoupleOgc SHARED
