@@ -166,3 +166,36 @@ TEST(ServiceDiscoveryTest, AnythingElseIsNotAServiceAtAll)
   EXPECT_EQ(detectServiceKind(QByteArray()), ServiceKind::Unknown);
   EXPECT_EQ(detectServiceKind("{\"not\": \"xml\"}"), ServiceKind::Unknown);
 }
+
+
+TEST(ServiceDiscovery, aCoverageServiceIsNotMistakenForATileService)
+{
+  // Both call their root element Capabilities and only the namespace
+  // separates them, so deciding on the local name alone handed every WCS to
+  // the WMTS parser -- which read it as a tile service with no layers, and
+  // reported an address that works as one offering nothing.
+  EXPECT_EQ(detectServiceKind(
+              fixture(QStringLiteral("wcs-2.0.1-pdok-ahn.xml"))),
+            ServiceKind::Wcs);
+
+  EXPECT_EQ(detectServiceKind(
+              fixture(QStringLiteral("wmts-1.0.0-resourceurl.xml"))),
+            ServiceKind::Wmts);
+}
+
+TEST(ServiceDiscovery, theOlderCoverageProtocolNamesItselfPlainly)
+{
+  EXPECT_EQ(detectServiceKind(
+              fixture(QStringLiteral("wcs-1.0.0-pdok-ahn.xml"))),
+            ServiceKind::Wcs);
+}
+
+TEST(ServiceDiscovery, aCoverageServiceIsAskedInItsOwnTerms)
+{
+  const QString url = buildCapabilitiesUrl(
+    QStringLiteral("https://example.org/wcs"), ServiceKind::Wcs);
+
+  EXPECT_TRUE(url.contains(QStringLiteral("SERVICE=WCS"))) << url.toStdString();
+  EXPECT_TRUE(url.contains(QStringLiteral("VERSION=2.0.1")))
+    << url.toStdString();
+}

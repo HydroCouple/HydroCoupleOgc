@@ -31,7 +31,8 @@ namespace HydroCouple::Ogc
       Unknown,
       Wms,
       Wmts,
-      Wfs
+      Wfs,
+      Wcs
   };
 
   /*!

@@ -61,6 +61,11 @@ namespace HydroCouple::Ogc
       service = QStringLiteral("WFS");
       newest = QStringLiteral("2.0.0");
     }
+    else if (kind == ServiceKind::Wcs)
+    {
+      service = QStringLiteral("WCS");
+      newest = QStringLiteral("2.0.1");
+    }
 
     query.addQueryItem(QStringLiteral("SERVICE"), service);
     query.addQueryItem(QStringLiteral("REQUEST"),
@@ -102,8 +107,33 @@ namespace HydroCouple::Ogc
         return ServiceKind::Wfs;
       }
 
+      if (element == QLatin1String("WCS_Capabilities"))
+      {
+        return ServiceKind::Wcs;
+      }
+
+      // WMTS and WCS 2.0 both call their root element Capabilities, and
+      // only the namespace separates them. Deciding on the local name
+      // alone hands every coverage service to the WMTS parser, which reads
+      // it as a tile service with no layers and reports an address that
+      // works as one that offers nothing.
       if (element == QLatin1String("Capabilities"))
       {
+        const QString ns = reader.namespaceUri().toString();
+
+        if (ns.contains(QLatin1String("/wcs/")))
+        {
+          return ServiceKind::Wcs;
+        }
+
+        if (ns.contains(QLatin1String("/wmts/")))
+        {
+          return ServiceKind::Wmts;
+        }
+
+        // Neither said so. WMTS, because a Capabilities element written
+        // without a namespace is one, and because that is what this did
+        // before there was anything else it could be.
         return ServiceKind::Wmts;
       }
 
