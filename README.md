@@ -64,6 +64,22 @@ same name.
 The test suites are the repository's own business and are off unless this is
 the project being built, so a consumer needs no Google Test of its own.
 
+## Contributing
+
+First-time contributors must sign the project [CLA](CLA.md) before a pull
+request can be merged. The CLA grants the project a perpetual, royalty-free
+copyright and patent license to your contributions and preserves the project's
+ability to relicense in the future; **you retain full copyright ownership** of
+your work.
+
+Signing is automated through [CLA Assistant](https://cla-assistant.io) — when
+you open your first PR, a bot comments with a one-click sign-in link. The CLA
+covers all subsequent contributions, so you only sign once. Corporate
+contributors should additionally submit a CCLA per
+[CLA §6](CLA.md#6-corporate-contributors).
+
 ## Licence
 
-LGPL-3.0-or-later.
+LGPL-3.0-or-later, and deliberately so. This library is linked by
+HydroCoupleComposer (LGPL) and by openswmm.gui (GPL); weak copyleft is what
+lets one shared library serve both.
