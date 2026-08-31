@@ -55,6 +55,13 @@ jobs:
           repository: microsoft/vcpkg
           ref: 2026.07.29
           path: vcpkg
+          # Full history, not the default shallow clone. vcpkg.json pins
+          # gtest to 1.15.2 while the baseline carries 1.17.0, and an
+          # override to a non-baseline version makes vcpkg check out that
+          # version's port as a git tree from the registry's history. A
+          # shallow clone does not have it, and the failure is a bare
+          # "failed to unpack tree object" during configure.
+          fetch-depth: 0
 
       - name: Install Ninja (Linux)
         if: runner.os == 'Linux'
@@ -63,6 +70,15 @@ jobs:
       - name: Install Ninja (macOS)
         if: runner.os == 'macOS'
         run: brew install ninja
+
+      # Windows was the one platform left to find Ninja on its own, on the
+      # assumption that the MSVC dev environment exposes the copy bundled
+      # with Visual Studio. Installed explicitly instead, so all three
+      # platforms get it the same way and the generator does not depend on
+      # what a runner image happens to ship.
+      - name: Install Ninja (Windows)
+        if: runner.os == 'Windows'
+        run: choco install ninja -y --no-progress
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
