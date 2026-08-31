@@ -55,11 +55,19 @@ add_library(HydroCoupleOgc SHARED
 add_library(HydroCoupleOgc::HydroCoupleOgc ALIAS HydroCoupleOgc)
 
 target_compile_definitions(HydroCoupleOgc
-    PRIVATE HYDROCOUPLEOGC_LIBRARY
-    # The consuming projects disable the Qt keywords because HydroCouple's
-    # ISignal declares a method named emit; this library must compile under
-    # that setting, so it never uses them either.
-    PUBLIC QT_NO_KEYWORDS)
+    PRIVATE
+        HYDROCOUPLEOGC_LIBRARY
+        # This library compiles with the Qt keywords off, because
+        # HydroCoupleComposer must -- HydroCouple's ISignal declares a
+        # method named emit -- and code that builds both ways is code
+        # either project can take.
+        #
+        # PRIVATE, emphatically. Exported, it forces the setting on every
+        # consumer: openswmm.gui uses `slots:` and `emit` throughout, and
+        # inherited this and stopped compiling. A library may require
+        # something of itself without requiring it of its callers, and its
+        # own headers use none of the keywords, so nothing here needs it.
+        QT_NO_KEYWORDS)
 
 target_include_directories(HydroCoupleOgc
     PUBLIC
